@@ -13,7 +13,7 @@ const transporter = nodemailer.createTransport({
 });
 
 export const sendOtpMail=async({to,otp}) =>{
-      console.log("📧 Sending OTP to:", to, "with code:", otp); // optional debug log
+      // console.log("📧 Sending OTP to:", to, "with code:", otp); // optional debug log
       
     await transporter .sendMail({
         from:process.env.EMAIL,

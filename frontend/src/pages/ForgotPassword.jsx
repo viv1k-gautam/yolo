@@ -11,16 +11,19 @@ const ForgotPassword = () => {
     const[otp, setOtp]=useState("")
     const[newpassword, setNewpassword]=useState("")
       const[confirmpassword, setConfirmpassword]=useState("")
+       const[err, setErr]=useState("")
 
       const handleSendOtp=async()=>{
         try {
             const result=await axios.post(`${serverUrl}/api/auth/send-otp`,{email},
                 {withCredentials:true})
                 console.log(result)
+                setErr("")
                 setStep(2)
             
         } catch (error) {
-            console.log(error)
+            
+            setErr(error?.response?.data?.message)
             
         }
       }
@@ -30,10 +33,11 @@ const ForgotPassword = () => {
             const result=await axios.post(`${serverUrl}/api/auth/verify-otp`,{email,otp},
                 {withCredentials:true})
                 console.log(result)
+                setErr("")
                 setStep(3)
             
         } catch (error) {
-            console.log(error)
+            setErr(error?.response?.data?.message)
             
         }
       }
@@ -45,11 +49,12 @@ const ForgotPassword = () => {
         try {
             const result=await axios.post(`${serverUrl}/api/auth/reset-password`,{email, newPassword:newpassword},
                 {withCredentials:true})
+                setErr("")
                 console.log(result)
                 navigate('/signin')
             
         } catch (error) {
-            console.log(error)
+            setErr(error?.response?.data?.message)
             
         }
       }
@@ -61,7 +66,7 @@ const ForgotPassword = () => {
             <div className='flex items-center gap-4 mb-6'>
                 <IoMdArrowRoundBack size={30} className='text-gray-500  cursor-pointer' 
                 onClick={()=>navigate("/signin")}/>
-            <h1 className='text-2xl font-bold text-center text-orange-500'>Forgot Password</h1>
+            <h1 className='text-2xl font-bold text-center text-orange-500 '>Forgot Password</h1>
             </div>
             {step==1 && 
             <div>
@@ -70,12 +75,13 @@ const ForgotPassword = () => {
                 <input type="email"className='w-full border rounded-lg px-3 py-2 focus:outline-none
                 focus:border-orange-500 border-[1px] border-zinc-300' placeholder='Enter Your Email'
                 onChange={(e)=>setemail(e.target.value)}
-                value={email}/>
+                value={email} required/>
             </div>  
             <button className='w-full mt-4 flex items-center justify-center gap-2
                 border rounded-lg px-4 py-2 transition duration-200 bg-orange-500 text-white cursor-pointer'
                 onClick={handleSendOtp}>
                     Send OTP</button>
+                       {err && <p className='text-red-500 text-center m-2'>*{err}</p>}
                 </div>}
 
                 {step==2 &&
@@ -91,6 +97,7 @@ const ForgotPassword = () => {
                 border rounded-lg px-4 py-2 transition duration-200 bg-orange-500 text-white cursor-pointer'
                 onClick={handleVerifyOtp}>
                     Verify OTP</button>
+                      {err && <p className='text-red-500 text-center m-2'>*{err}</p>}
                 </div>}
 
                 {step==3 &&
@@ -113,6 +120,7 @@ const ForgotPassword = () => {
                 border rounded-lg px-4 py-2 transition duration-200 bg-orange-500 text-white cursor-pointer'
                 onClick={handleresetPassword}>
                     Reset Password </button>
+                    {err && <p className='text-red-500 text-center m-2'>*{err}</p>}
                 </div>}
 
         </div>
