@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { FaLocationDot } from "react-icons/fa6";
 import { IoIosArrowDown } from "react-icons/io";
 import { LuShoppingCart } from "react-icons/lu";
+import { RiNotification2Line } from "react-icons/ri";
 import { useDispatch, useSelector } from 'react-redux';
 import { serverUrl } from '../App';
 import { setUserData } from '../redux/user.slice';
@@ -9,6 +10,7 @@ import axios from "axios"
 
 function Nav() {
     const {userData,city,country}=useSelector(state=>state.user)
+    // const {myShopData}=useSelector(state=> state.owner)
     const [showInfo,setShowInfo]=useState(false)
     const dispatch = useDispatch()
     const handleLogout=async()=>{
@@ -46,12 +48,21 @@ function Nav() {
         </div>
 
         {/* Cart */}
-        <div className="relative cursor-pointer">
+
+        {userData.role=="user"&& <div className="relative cursor-pointer">
           <LuShoppingCart size={25} className="text-gray-700 hover:text-orange-500 transition" />
           <div className="absolute -top-2 -right-2 bg-orange-500 text-white rounded-full h-5 w-5 text-xs flex items-center justify-center">
             1
           </div>
-        </div>
+        </div>}
+
+        {userData.role=="owner"&& <div className="relative cursor-pointer">
+          <RiNotification2Line size={25} className="text-gray-700 hover:text-orange-500 transition" />
+          <div className="absolute -top-2 -right-2 bg-orange-500 text-white rounded-full h-5 w-5 text-xs flex items-center justify-center">
+            1
+          </div>
+        </div>}
+        
 
         {/* Profile */}
         <div className="flex items-center gap-1 cursor-pointer">

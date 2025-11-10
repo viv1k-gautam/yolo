@@ -8,13 +8,16 @@ import useGetCurrentUser from '../hooks/getCurrentUser'
 import { useSelector } from 'react-redux'
 import Home from './pages/Home'
 import useGetCity from '../hooks/useGetCity'
-
+import Overview from './components/Overview'
+import useGetMyshop from '../hooks/useGetmyshop'
+import RestaurantInfo from './components/RestaurntInfo'
 export const serverUrl="http://localhost:8000"
 
 const App = () => {
 
 useGetCurrentUser()
 useGetCity()
+useGetMyshop()
 const {userData}=useSelector(state=>state.user)
   return (
      <>
@@ -25,6 +28,8 @@ const {userData}=useSelector(state=>state.user)
     <Route path='/signin' element={!userData?<SignIn/>:<Navigate to={"/"}/>}/>
     <Route path='/forgot-password' element={!userData?<ForgotPassword/>:<Navigate to={"/"}/>}/>
     <Route path='/' element={userData?<Home/>:<Navigate to={"/signin"}/>}/>
+     <Route path="/restaurant-info" element={userData ? <RestaurantInfo /> : <Navigate to="/signin" />}/>
+    <Route  path="/overview" element={userData ? <Overview /> : <Navigate to="/signin" />} />
     </Routes>
     </>
   )
